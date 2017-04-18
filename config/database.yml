@@ -1,0 +1,15 @@
+database: &default
+  adapter: postgresql
+  encoding: utf8
+
+  database: webrtc_local
+  username: dv
+  password:
+  host: localhost
+  pool: 10
+
+development:
+  <<: *default
+
+production:
+  <<: *default

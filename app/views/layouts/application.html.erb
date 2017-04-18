@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>WebrtcRails</title>
+    <%= csrf_meta_tags %>
+
+    <%= stylesheet_link_tag    'application', media: 'all' %>
+    <%= javascript_include_tag 'application' %>
+
+    <script src="https://simplewebrtc.com/latest-v2.js"></script>
+  </head>
+
+  <body>
+    <%= yield %>
+  </body>
+</html>

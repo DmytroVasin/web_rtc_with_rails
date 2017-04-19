@@ -33,7 +33,8 @@ var Room = {
       autoRequestMedia: true,
       debug: false,
       detectSpeakingEvents: true,
-      autoAdjustMic: false
+      autoAdjustMic: false,
+      url: 'https://quiet-harbor-24198.herokuapp.com/'
     });
   },
   readyToCall: function() {

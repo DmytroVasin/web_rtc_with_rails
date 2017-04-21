@@ -13,3 +13,20 @@
  *= require_tree .
  *= require_self
  */
+
+
+#localVideo {
+  border: 3px solid black;
+}
+
+#localVideo  video {
+  width: 150px;
+}
+
+#remotesVideos {
+  border: 3px solid red;
+
+}
+#remotesVideos video {
+  width: 150px;
+}

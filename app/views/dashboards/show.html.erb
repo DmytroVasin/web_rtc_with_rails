@@ -1,0 +1,42 @@
+<h1 id='dashboard'><%= @current_user.name %></h1>
+
+<ul>
+<% User.all.each do |user| %>
+  <li>
+    <span><%= user.name %></span>
+    <% unless @current_user.id == user.id %>
+      <%= link_to 'Call', call_dashboards_path(callee: user.token, caller: @current_user.token), remote: true %>
+    <% end %>
+  </li>
+<% end %>
+</ul>
+
+
+<script>
+  var token = "<%= @token %>"
+  App.task = App.cable.subscriptions.create({channel: 'ApplicationCable::UsersCallToChannel', token: token }, {
+    received: function(data) {
+      this.createLink(data);
+    },
+    createLink: function(data) {
+      var link = $('<a>');
+
+      link.attr('href', '/dashboards/answer?caller=' + data.caller + '&callee=' + data.callee);
+      link.text('Answer');
+      link.addClass('answer');
+      link.attr('data-remote', true);
+      link.appendTo( $('body') );
+    }
+  });
+</script>
+
+<script>
+  var token = "<%= @token %>"
+  App.task = App.cable.subscriptions.create({channel: 'ApplicationCable::UsersAnswerToChannel', token: token }, {
+    received: function(data) {
+      $('body').append('<h1>YOU HAVE AN ANSWER!</h1>')
+
+      Room.initialize(data.caller + '_' + data.callee)
+    }
+  })
+</script>

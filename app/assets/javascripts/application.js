@@ -1,15 +1,13 @@
-// app/assets/javascripts/cable.js
-
-//= require action_cable
 //= require jquery
 //= require jquery_ujs
 //= require_tree .
-//= require_tree ./channels
+//= require_self
 
+$( document ).ready(function() {
 
-(function() {
-  this.App || (this.App = {});
+if (!$("#dashboard").length && App.task) {
+  App.task.unsubscribe()
+  App.task = null
+}
 
-  App.cable = ActionCable.createConsumer();
-
-}).call(this);
+});

@@ -3,7 +3,13 @@
 
 // grab the room from the URL
 var Room = {
+  init: function(){
+    $('body').append("<div id='localVideo'></div>");
+    $('body').append("<div id='remotesVideos'></div>");
+  },
   initialize: function(room){
+    this.init()
+
     this.room = room;
     this.webrtc = this.connect();
     this.webrtc.on('readyToCall', this.readyToCall.bind(this));

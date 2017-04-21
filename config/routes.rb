@@ -3,5 +3,18 @@ Rails.application.routes.draw do
 
   root 'rooms#index'
 
-  resources :rooms, only: [:index, :new, :create, :show]
+  resources :users, only: [:index, :create]
+
+  resources :dashboards do
+    collection do
+      get 'call'
+      get 'answer'
+    end
+  end
+
+  resources :rooms, only: [:index, :new, :create, :show] do
+    collection do
+      get 'call'
+    end
+  end
 end

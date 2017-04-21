@@ -17,4 +17,11 @@ class DashboardsController < ApplicationController
     ActionCable.server.broadcast "answer_to_#{_caller}", { callee: _callee , caller: _caller }
     ActionCable.server.broadcast "answer_to_#{_callee}", { callee: _callee , caller: _caller }
   end
+
+  def ignore
+    _callee = params[:callee]
+    _caller = params[:caller]
+
+    ActionCable.server.broadcast "ignore_to_#{_caller}", { callee: _callee , caller: _caller }
+  end
 end

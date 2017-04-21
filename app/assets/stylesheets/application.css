@@ -30,3 +30,18 @@
 #remotesVideos video {
   width: 150px;
 }
+
+.answer {
+  color: green;
+}
+.ignore {
+  color: red;
+}
+.make_call {
+  color: green;
+  cursor: pointer;
+}
+
+.hidden {
+  display: none;
+}

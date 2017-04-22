@@ -1,64 +1,81 @@
 $( document ).ready(function() {
 
   $('.make_call').on('click', function(){
-    var caller = $(this).data('caller');
-    var callee = $(this).data('callee');
+    var callModal = $('#call_modal');
+    var calleName = $(this).data('callee-name')
+    var calleId = $(this).data('callee-id')
 
-    var make_call_url = '/dashboards/call?caller=' + caller + '&callee=' + callee;
-    var stop_call_url = '/dashboards/stop?caller=' + caller + '&callee=' + callee;
+    callModal.modal({ backdrop: 'static', keyboard: false })
+    callModal.find('.modal-title').text("Call to: '" + calleName + "'")
+
+    var make_call_url = '/dashboards/call?to=' + calleId;
 
     $.ajax({
       method: 'GET',
       url: make_call_url,
       dataType: 'script'
     }).done(function() {
-      $('#ringing').show()
-      $('#ringing .stop_call').data('url', stop_call_url)
+      callModal.find('#ringing').show()
+      callModal.find('#stop_call').data('callee-id', calleId)
+      callModal.find('#stop_call').show()
     });
-
   });
 
-  $('.stop_call').on('click', function(){
-    var url = $(this).data('url');
+  $('#stop_call').on('click', function () {
+    var callModal = $('#call_modal');
+    var calleId = $(this).data('callee-id')
+
+    var stop_call_url = '/dashboards/stop?to=' + calleId;
 
     $.ajax({
       method: 'GET',
-      url: url,
+      url: stop_call_url,
       dataType: 'script'
     }).done(function() {
-      $('#ringing').hide()
+      callModal.modal('hide');
+      callModal.find('.modal-title').text("");
+      callModal.find('#ringing').hide();
+      callModal.find('#stop_call').hide();
     });
+  })
 
-  });
-
-  $('#answerIgnore .answer').on('click', function(){
-    var caller = $(this).data('caller')
-    var callee = $(this).data('callee')
-    var url = "/dashboards/answer?caller=" + caller + '&callee=' + callee
+  $('#call_modal #ignore').on('click', function(){
+    var callModal = $('#call_modal');
+    var calleId = $(this).data('caller-id');
+    var ignore_url = '/dashboards/ignore?to=' + calleId;
 
     $.ajax({
       method: 'GET',
-      url: url,
+      url: ignore_url,
       dataType: 'script'
     }).done(function() {
-      $('#answerIgnore').hide()
+      callModal.modal('hide');
+      callModal.find('.modal-title').text('');
+      callModal.find('#connect').hide()
+      callModal.find('#ignore').hide()
     });
-
   });
 
-  $('#answerIgnore .ignore').on('click', function(){
-    var caller = $(this).data('caller')
-    var callee = $(this).data('callee')
-    var url = "/dashboards/ignore?caller=" + caller + '&callee=' + callee
+  $('#call_modal #connect').on('click', function(){
+    var calleId = $(this).data('caller-id');
+    var connect_url = '/dashboards/connect?to=' + calleId;
 
     $.ajax({
       method: 'GET',
-      url: url,
+      url: connect_url,
       dataType: 'script'
-    }).done(function() {
-      $('#answerIgnore').hide()
-    });
+    })
+  });
 
+  $('#call_modal #disconnect').on('click', function(){
+    var userIds = $(this).data('user_ids');
+    var disconnect_url = '/dashboards/disconnect?user_ids=' + userIds;
+
+    $.ajax({
+      method: 'GET',
+      url: disconnect_url,
+      dataType: 'script'
+    });
   });
 
 });

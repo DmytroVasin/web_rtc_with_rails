@@ -1,0 +1,8 @@
+<% if flash.any? %>
+  <div class="alert alert-danger">
+    <% flash.each do |type, message| %>
+      <span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+      <%= message %>
+    <%end%>
+  </div>
+<%end%>

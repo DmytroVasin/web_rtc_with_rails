@@ -1,0 +1,23 @@
+<div class='modal fade' id='call_modal'>
+  <div class='modal-dialog'>
+    <div class='modal-content'>
+
+      <div class='modal-header'>
+        <h4 class='modal-title text-center'></h4>
+      </div>
+
+      <div class='modal-body'>
+        <%= render 'ringing_block' %>
+        <%= render 'connect_block' %>
+      </div>
+
+      <div class='modal-footer'>
+        <button id='stop_call', class='hidden_block btn btn-default'>Stop Call</button>
+        <button id='connect', class='hidden_block btn btn-success'>Connect</button>
+        <button id='ignore', class='hidden_block btn btn-danger'>Ignore</button>
+        <button id='disconnect', class='hidden_block btn btn-danger'>Disconnect</button>
+      </div>
+
+    </div>
+  </div>
+</div>

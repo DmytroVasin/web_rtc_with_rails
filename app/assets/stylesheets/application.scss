@@ -1,0 +1,69 @@
+@import "bootstrap-sprockets";
+@import "bootstrap";
+
+// Users
+.auth-form {
+  margin: 5%;
+  text-align: center;
+}
+
+#new_user div.input-group {
+  width: 50%;
+  margin-left: 25%;
+}
+
+.auth-form label {
+  margin-bottom: 3%;
+}
+
+.auth-form > form > div.actions {
+  margin-top: 3%;
+}
+
+.auth-form > form > div.actions input.btn {
+  width: 50%;
+}
+
+.hidden_block {
+  display: none;
+}
+
+
+// Video
+
+#connect-block {
+  position: relative;
+
+  #remotesVideos {
+    min-height: 100px;
+
+    video {
+      width: 100%;
+      display: block;
+    }
+  }
+
+  #localVideo {
+    position: absolute;
+    right: 5px;
+    bottom: 5px;
+    border: 2px solid #000;
+    height: 100px;
+  }
+
+  #muteButton, #stopVideoButton {
+    position: absolute;
+    bottom: 10px;
+    top: inherit;
+  }
+
+  #muteButton {
+    left: 50%;
+    transform: translate(60%, 0);
+  }
+
+  #stopVideoButton {
+    left: 50%;
+    transform: translate(-60%, 0);
+  }
+}

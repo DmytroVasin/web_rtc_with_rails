@@ -2,9 +2,9 @@ module ApplicationCable
   class UsersStopCallToChannel < ActionCable::Channel::Base
 
     def subscribed
-      token = params[:token]
+      user_id = params[:user_id]
 
-      stream_from("stop_call_to_#{token}")
+      stream_from("stop_call_to_#{user_id}")
     end
 
   end

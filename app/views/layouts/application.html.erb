@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>WebrtcRails</title>
+    <title>WebRTCRails</title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all' %>
@@ -11,6 +11,17 @@
   </head>
 
   <body>
-    <%= yield %>
+    <%= render partial: 'layouts/navbar' %>
+
+    <div class="container">
+      <%= render partial: 'layouts/flash_errors'%>
+      <%= yield %>
+    </div>
+
+
+    <script>
+      userId = "<%= session[:user_id] %>";
+    </script>
   </body>
 </html>
+

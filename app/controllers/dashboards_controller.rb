@@ -1,33 +1,47 @@
 class DashboardsController < ApplicationController
-  def show
-    @current_user = User.find_by(token: params[:id])
-    @token = params[:id]
+
+  def index
   end
 
   def call
-    _callee = params[:callee]
-    _caller = params[:caller]
-    ActionCable.server.broadcast "call_to_#{_callee}", { callee: _callee , caller: _caller }
+    reciver = User.find(params[:to])
+
+    ActionCable.server.broadcast "call_to_#{reciver.id}", { name: current_user.name , caller_id: current_user.id }
   end
 
   def stop
-    _callee = params[:callee]
-    _caller = params[:caller]
-    ActionCable.server.broadcast "stop_call_to_#{_callee}", { callee: _callee , caller: _caller }
+    reciver = User.find(params[:to])
+
+    ActionCable.server.broadcast "stop_call_to_#{reciver.id}", {}
   end
 
-  def answer
-    _callee = params[:callee]
-    _caller = params[:caller]
+  def connect
+    _caller = User.find(params[:to])
+    _callee = current_user
 
-    ActionCable.server.broadcast "answer_to_#{_caller}", { callee: _callee , caller: _caller }
-    ActionCable.server.broadcast "answer_to_#{_callee}", { callee: _callee , caller: _caller }
+    room = SecureRandom.hex
+
+    ActionCable.server.broadcast "connect_#{_caller.id}", { room: room, user_ids: [_caller.id, _callee.id]}
+    ActionCable.server.broadcast "connect_#{_callee.id}", { room: room, user_ids: [_caller.id, _callee.id]}
+  end
+
+  def disconnect
+    user_ids = params[:user_ids].split(',')
+    users = User.where(id: user_ids)
+
+    users.each do |user|
+      ActionCable.server.broadcast "disconnect_#{user.id}", {}
+    end
   end
 
   def ignore
-    _callee = params[:callee]
-    _caller = params[:caller]
+    reciver = User.find(params[:to])
 
-    ActionCable.server.broadcast "ignore_to_#{_caller}", { callee: _callee , caller: _caller }
+    ActionCable.server.broadcast "ignore_to_#{reciver.id}", {}
   end
+
+  helper_method def users
+    @users ||= User.all
+  end
+
 end

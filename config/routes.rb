@@ -1,22 +1,22 @@
 Rails.application.routes.draw do
   mount ActionCable.server => '/cable'
 
-  root 'rooms#index'
-
-  resources :users, only: [:index, :create]
-
   resources :dashboards do
     collection do
       get 'call'
       get 'stop'
-      get 'answer'
       get 'ignore'
+      get 'connect'
+      get 'disconnect'
     end
   end
 
-  resources :rooms, only: [:index, :new, :create, :show] do
-    collection do
-      get 'call'
-    end
-  end
+  root 'welcome#index'
+
+  get 'signup', to: "registrations#new"
+  post 'signup', to: "registrations#create"
+
+  get 'login', to: "sessions#new"
+  post 'login', to: "sessions#create"
+  delete 'logout', to: "sessions#destroy"
 end

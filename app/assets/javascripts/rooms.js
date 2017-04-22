@@ -1,33 +1,20 @@
-// Place all the behaviors and hooks related to the matching controller here.
-// All this logic will automatically be available in application.js.
-
-// grab the room from the URL
 var Room = {
-  init: function(){
-    $('body').append("<div id='localVideo'></div>");
-    $('body').append("<div id='remotesVideos'></div>");
-  },
   initialize: function(room){
-    this.init()
-
+    console.log('>>>>>>>>>>>>>>>>>>')
+    console.log(room)
+    console.log('>>>>>>>>>>>>>>>>>>')
     this.room = room;
     this.webrtc = this.connect();
     this.webrtc.on('readyToCall', this.readyToCall.bind(this));
-    this.webrtc.on('channelMessage', this.channelMessage.bind(this));
     this.webrtc.on('videoAdded', this.videoAdded.bind(this));
     this.webrtc.on('videoRemoved', this.videoRemoved.bind(this));
-    this.webrtc.on('volumeChange', this.volumeChange.bind(this));
-    this.webrtc.on('localScreenRemoved', this.localScreenRemoved.bind(this));
+    // this.webrtc.on('channelMessage', this.channelMessage.bind(this));
+    // this.webrtc.on('volumeChange', this.volumeChange.bind(this));
+    // this.webrtc.on('localScreenRemoved', this.localScreenRemoved.bind(this));
 
-    this.stopButton = $('#stopVideoButton');
-    this.stopButton.click(this.stop.bind(this));
-
-    this.muteButton = $('#muteButton');
-    this.muteButton.click(this.mute.bind(this));
-
-    this.shareButton = $('#screenShareButton');
-    this.shareButton.click(this.share.bind(this));
-    this.setShareButton(true);
+    // this.shareButton = $('#screenShareButton');
+    // this.shareButton.click(this.share.bind(this));
+    // this.setShareButton(true);
   },
   connect: function(){
     return new SimpleWebRTC({
@@ -47,26 +34,24 @@ var Room = {
     console.log('readyToCall');
     if (this.room) this.webrtc.joinRoom(this.room);
   },
-  showVolume: function(el, volume){
-    console.log('showVolume')
-    if (!el) return;
-    if (volume < -45) { // vary between -45 and -20
-      el.style.height = '0px';
-    } else if (volume > -20) {
-      el.style.height = '100%';
-    } else {
-      el.style.height = '' + Math.floor((volume + 100) * 100 / 25 - 220) + '%';
-    }
-  },
-  channelMessage: function (peer, label, data) {
-    console.log('channelMessage')
-    if (data.type == 'volume') {
-      this.showVolume(document.getElementById('volume_' + peer.id), data.volume);
-    }
-  },
+  // showVolume: function(el, volume){
+  //   console.log('showVolume')
+  //   if (!el) return;
+  //   if (volume < -45) { // vary between -45 and -20
+  //     el.style.height = '0px';
+  //   } else if (volume > -20) {
+  //     el.style.height = '100%';
+  //   } else {
+  //     el.style.height = '' + Math.floor((volume + 100) * 100 / 25 - 220) + '%';
+  //   }
+  // },
+  // channelMessage: function (peer, label, data) {
+  //   console.log('channelMessage')
+  //   if (data.type == 'volume') {
+  //     this.showVolume(document.getElementById('volume_' + peer.id), data.volume);
+  //   }
+  // },
   videoAdded: function(video, peer){
-    console.log('videoAdded')
-    console.log('video added', peer);
     var remotes = document.getElementById('remotes');
     if (remotes) {
       var d = document.createElement('div');
@@ -81,57 +66,55 @@ var Room = {
     }
   },
   videoRemoved: function(video, peer){
-    console.log('videoRemoved')
-      console.log('video added', peer);
+    console.log('....')
       var remotes = document.getElementById('remotes');
       var el = document.getElementById('peer_' + peer.id);
       if (remotes && el) {
         remotes.removeChild(el);
       }
   },
-  volumeChange: function (volume, treshold) {
-    console.log('volumeChange')
-    this.showVolume(document.getElementById('localVolume'), volume);
+  // volumeChange: function (volume, treshold) {
+  //   console.log('volumeChange')
+  //   this.showVolume(document.getElementById('localVolume'), volume);
+  // },
+  // localScreenRemoved: function(){
+  //   this.shareButton.set(true);
+  // },
+  // setShareButton: function(bool){
+  //   this.shareButton.text(bool ? 'Share Screen' : 'Stop Sharing');
+  // },
+  // share: function () {
+  //   if (this.webrtc.getLocalScreen()) {
+  //     this.webrtc.stopScreenShare();
+  //     this.setShareButton(true);
+  //   } else {
+  //     this.webrtc.shareScreen(function (err) {
+  //       if (err) {
+  //         this.setShareButton(false);
+  //         console.log(err.message);
+  //       } else {
+  //         this.setShareButton(true);
+  //       }
+  //     }.bind(this));
+  //   }
+  // }
+  leaveRoom: function () {
+    // this.webrtc.stopLocalVideo();
+    // this.webrtc.disconnect()
+    this.webrtc.leaveRoom();
+    // this.webrtc = null;
+    // this.room = null;
   },
-  stop: function(){
-    console.log('stop')
-    if (this.stopButton.text() == 'Stop'){
-      this.webrtc.pause();
-      this.stopButton.text("Resume");
-    } else {
-      this.webrtc.resume();
-      this.stopButton.text("Stop");
-    }
+  pauseVideo: function () {
+    this.webrtc.pause();
   },
-  mute: function(){
-    console.log('mute')
-    if (this.muteButton.text() == 'Mute'){
-      this.webrtc.mute();
-      this.muteButton.text("Unmute");
-    } else {
-      this.webrtc.unmute();
-      this.muteButton.text("Mute");
-    }
+  resumeVideo: function () {
+    this.webrtc.resume();
   },
-  localScreenRemoved: function(){
-    this.shareButton.set(true);
+  mute: function () {
+    this.webrtc.mute();
   },
-  setShareButton: function(bool){
-    this.shareButton.text(bool ? 'Share Screen' : 'Stop Sharing');
-  },
-  share: function () {
-    if (this.webrtc.getLocalScreen()) {
-      this.webrtc.stopScreenShare();
-      this.setShareButton(true);
-    } else {
-      this.webrtc.shareScreen(function (err) {
-        if (err) {
-          this.setShareButton(false);
-          console.log(err.message);
-        } else {
-          this.setShareButton(true);
-        }
-      }.bind(this));
-    }
+  unMute: function () {
+    this.webrtc.unmute();
   }
 };

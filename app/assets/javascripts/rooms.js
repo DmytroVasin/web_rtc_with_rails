@@ -44,9 +44,11 @@ var Room = {
     });
   },
   readyToCall: function() {
+    console.log('readyToCall');
     if (this.room) this.webrtc.joinRoom(this.room);
   },
   showVolume: function(el, volume){
+    console.log('showVolume')
     if (!el) return;
     if (volume < -45) { // vary between -45 and -20
       el.style.height = '0px';
@@ -57,11 +59,13 @@ var Room = {
     }
   },
   channelMessage: function (peer, label, data) {
+    console.log('channelMessage')
     if (data.type == 'volume') {
       this.showVolume(document.getElementById('volume_' + peer.id), data.volume);
     }
   },
   videoAdded: function(video, peer){
+    console.log('videoAdded')
     console.log('video added', peer);
     var remotes = document.getElementById('remotes');
     if (remotes) {
@@ -77,6 +81,7 @@ var Room = {
     }
   },
   videoRemoved: function(video, peer){
+    console.log('videoRemoved')
       console.log('video added', peer);
       var remotes = document.getElementById('remotes');
       var el = document.getElementById('peer_' + peer.id);
@@ -85,9 +90,11 @@ var Room = {
       }
   },
   volumeChange: function (volume, treshold) {
+    console.log('volumeChange')
     this.showVolume(document.getElementById('localVolume'), volume);
   },
   stop: function(){
+    console.log('stop')
     if (this.stopButton.text() == 'Stop'){
       this.webrtc.pause();
       this.stopButton.text("Resume");
@@ -97,6 +104,7 @@ var Room = {
     }
   },
   mute: function(){
+    console.log('mute')
     if (this.muteButton.text() == 'Mute'){
       this.webrtc.mute();
       this.muteButton.text("Unmute");

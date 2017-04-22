@@ -8,6 +8,7 @@ Rails.application.routes.draw do
   resources :dashboards do
     collection do
       get 'call'
+      get 'stop'
       get 'answer'
       get 'ignore'
     end

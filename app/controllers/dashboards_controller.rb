@@ -10,6 +10,12 @@ class DashboardsController < ApplicationController
     ActionCable.server.broadcast "call_to_#{_callee}", { callee: _callee , caller: _caller }
   end
 
+  def stop
+    _callee = params[:callee]
+    _caller = params[:caller]
+    ActionCable.server.broadcast "stop_call_to_#{_callee}", { callee: _callee , caller: _caller }
+  end
+
   def answer
     _callee = params[:callee]
     _caller = params[:caller]

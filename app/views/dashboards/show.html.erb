@@ -56,6 +56,8 @@
       $('#ringing').hide()
       $('body').append('<h1>YOU HAVE AN ANSWER!</h1>')
 
+      console.log('RoomInitialize')
+
       Room.initialize(data.caller + '_' + data.callee)
     }
   })
